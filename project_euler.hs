@@ -2,8 +2,7 @@ import Data.List
 import Data.Char
 
 main :: IO()
-main = putStrLn . show $ problem10
-
+main = putStrLn . show $ problem12
 
 problem1 :: Int
 problem1 = sum . filter (\x -> x `mod` 3 == 0 || x `mod` 5 == 0 ) $ [1..999]
@@ -38,7 +37,7 @@ problem7 :: Integer
 problem7 = primes !! 10000
   where
     primes = sieve (2 : [3, 5..])
-    sieve (p:xs) = p : sieve [x|x <- xs, x `mod` p > 0]
+    sieve (p:xs) = p : sieve [x | x <- xs, x `mod` p > 0]
 
 problem8 :: Int
 problem8 = maximum . map product . map (\x -> map digitToInt x) . filter (\x -> all (\y -> y /= '0') x ) $ substrings
@@ -53,8 +52,23 @@ problem9 = head . map (\(a, b, c) -> a*b*c) . triplets $ thousands
     thousands = [(a, b, c) | a <- [1..999], b <- [(a+1)..999], c <- [(b+1)..999], a + b + c == 1000]
     square = (^2)
 
+--Veeery inefficient. Not my fault if you're in a hurry.
 problem10 :: Integer
 problem10 = sum . takeWhile (<2000000) $ primes
   where
     primes = sieve (2 : [3, 5..])
-    sieve (p:xs) = p : sieve [x|x <- xs, x `mod` p > 0]
+    sieve (p:xs) = p : sieve [ x | x <- xs, x `mod` p > 0 ]
+
+-- Again: Slow.
+problem12 :: [(Int, Int)]
+problem12 = [(divisors 49, 3)]
+--problem12 = filter (\(x, div) -> div > 5 ) . map (\x -> (x, length $ divisors x)) . map (\n -> sum [1..n]) $ [1..]
+  where
+    divisors :: Int -> [Int]
+    divisors 1 = 1:[]
+    divisors n = (firstDivisor n) : divisors ( n `div` firstDivisor n)
+    firstDivisor n = unpackMaybe . find (\x -> n `rem` x == 0 ) $ [2..n]
+    --divisors n = [ x | x <- [1..n], n `rem` x == 0 ]
+
+unpackMaybe:: Maybe a -> a
+unpackMaybe (Just x) = x
