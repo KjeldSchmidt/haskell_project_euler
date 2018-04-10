@@ -2,7 +2,7 @@ import Data.List
 import Data.Char
 
 main :: IO()
-main = putStrLn . show $ problem9
+main = putStrLn . show $ problem10
 
 
 problem1 :: Int
@@ -52,3 +52,9 @@ problem9 = head . map (\(a, b, c) -> a*b*c) . triplets $ thousands
     triplets = filter (\(a, b, c) -> (square a) + (square b) == (square c))
     thousands = [(a, b, c) | a <- [1..999], b <- [(a+1)..999], c <- [(b+1)..999], a + b + c == 1000]
     square = (^2)
+
+problem10 :: Integer
+problem10 = sum . takeWhile (<2000000) $ primes
+  where
+    primes = sieve (2 : [3, 5..])
+    sieve (p:xs) = p : sieve [x|x <- xs, x `mod` p > 0]
