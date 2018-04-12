@@ -157,11 +157,11 @@ problem29 :: Int
 problem29 = (length . nub) [a^b | a <- [2..100], b <- [2..100]]
 
 
---The upper bound is a rough estimate and could likely be improved. It can be seen easily:
+--The upper bound of 999999 is a rough estimate. It can be seen easily:
 --999999 is larger than it's digit power sum
 --Any larger number will either have a much smaller sum (if fewer nines) or be even even larger in comparison (in case of all nines)
 --An better upper bound could be gained from the code by simply calling "last" instead of "sum"
--- Which would result in a bound as low as 194979
+-- Which results in a bound as low as 194979
 problem30 :: Integer
 problem30 = (sum . digitPowersEqual) [2..194979]
   where
