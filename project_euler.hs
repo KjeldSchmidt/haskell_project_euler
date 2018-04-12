@@ -3,7 +3,7 @@ import Data.Char
 import Data.Set as Set (difference, fromList)
 
 main :: IO()
-main = putStrLn . show $ problem40
+main = putStrLn . show $ problem39
 
 -- Helpers
 
@@ -11,7 +11,7 @@ unpackMaybe:: Maybe a -> a
 unpackMaybe (Just x) = x
 
 primeFactorisation :: Int -> [Int]
-primeFactorisation 1 = 1:[]
+primeFactorisation 1 = []
 primeFactorisation n = (firstDivisor n) : primeFactorisation ( n `div` firstDivisor n)
   where
     firstDivisor n = unpackMaybe . find (\x -> n `rem` x == 0 ) $ [2..n]
@@ -175,6 +175,15 @@ problem31 = (sum . filter (\x -> (sum . map fact . digits) x == x)) [10..40585]
   where
     fact n = product [1..n]
     digits = map (read . (:[])) . show
+
+-- S.... l.....o...... w......
+problem39 :: Int
+problem39 = ( fst . head . sortBy (\(x, sx) (y, sy) -> sy `compare` sx) . map (\x -> (x, solutions x)) ) [1..500]
+  where
+    possiblyRightTriangles p = [(a, b, c) | a <- [1..p], b <- [(a+1)..(p-(a+1))], c <- [p-(a+b)]]
+    rightTriangles = filter (\(a, b, c) -> a^2 + b^2 == c^2 )
+    solutions = length . rightTriangles . possiblyRightTriangles
+
 
 problem40 :: Int
 problem40 = product [digitToInt (champConstant !! n) | n <- [1, 10, 100, 1000, 10000, 100000, 1000000]]
