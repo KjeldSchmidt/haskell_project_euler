@@ -3,7 +3,7 @@ import Data.Char
 import Data.Set as Set (difference, fromList)
 
 main :: IO()
-main = putStrLn . show $ problem30
+main = putStrLn . show $ problem40
 
 -- Helpers
 
@@ -153,6 +153,10 @@ problem25 = (+1) . fst . last . takeWhile (\x -> (length . show . snd) x < 1000)
           | otherwise = (f^2+g^2,   g*(2*f-g))
 
 
+problem29 :: Int
+problem29 = (length . nub) [a^b | a <- [2..100], b <- [2..100]]
+
+
 --The upper bound is a rough estimate and could likely be improved. It can be seen easily:
 --999999 is larger than it's digit power sum
 --Any larger number will either have a much smaller sum (if fewer nines) or be even even larger in comparison (in case of all nines)
@@ -163,3 +167,16 @@ problem30 = (sum . digitPowersEqual) [2..194979]
   where
     digitPowersEqual xs = filter (\x -> ((sum . map (^5) . digits) x) == x) xs
     digits = map (read . (:[])) . show
+
+--In an argument quite similar to 30, we can use 7 Digits (so, 9999999) as an upper bound
+--Leaving us with a significantly smaller upper bound of 40585
+problem31 :: Integer
+problem31 = (sum . filter (\x -> (sum . map fact . digits) x == x)) [10..40585]
+  where
+    fact n = product [1..n]
+    digits = map (read . (:[])) . show
+
+problem40 :: Int
+problem40 = product [digitToInt (champConstant !! n) | n <- [1, 10, 100, 1000, 10000, 100000, 1000000]]
+  where
+    champConstant = (concatMap show) [0..]
