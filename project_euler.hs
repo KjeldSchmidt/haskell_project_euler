@@ -3,7 +3,7 @@ import Data.Char
 import Data.Set as Set (difference, fromList)
 
 main :: IO()
-main = putStrLn . show $ problem39
+main = putStrLn . show $ problem18
 
 -- Helpers
 
@@ -102,6 +102,18 @@ problem15 = product [1..40] `div` ( (product [1..20]) * (product [1..20]))
 
 problem16 :: Int
 problem16 = sum . map (\x -> digitToInt x) . show $ (2^1000)
+
+
+problem18 :: Int
+problem18 = head $ step 1 (numbers !! 0)
+  where
+    step n xs 
+      | n == length numbers = xs
+      | otherwise = step (n+1) (zipWith (+) ((map maximum . packNeighbours) xs) (numbers !! n))
+    packNeighbours :: [a] -> [[a]]
+    packNeighbours (x:[]) = []
+    packNeighbours (x:y:xs) = [x, y] : (packNeighbours (y:xs))
+    numbers = [[1, 2, 3, 4, 5], [5, 6, 7, 8], [10, 1, 1], [5, 15], [4]]
 
 problem20 :: Int
 problem20 = sum . map (\x -> digitToInt x) . show . product $ [1..100]
