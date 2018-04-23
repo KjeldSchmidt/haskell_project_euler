@@ -3,7 +3,7 @@ import Data.Char
 import Data.Set as Set (difference, fromList)
 
 main :: IO()
-main = putStrLn . show $ problem69
+main = putStrLn . show $ problem36
 
 -- Helpers
 
@@ -206,6 +206,12 @@ problem35 = length $ filter isRotationalPrime (primeRange 2 1000000)
     isRotationalPrime n = all (\x -> isPrime x) ((map read . allRotations . show) n)
     allRotations xs = init (zipWith (++) (tails xs) (inits xs))
 
+problem36 :: Int
+problem36 = (sum . map snd .filter ( isPalindrome . fst ) . map (\x -> (writeBinary x, x)) . map read . filter isPalindrome . map show) [1..1000000]
+  where
+    isPalindrome x = x == reverse x
+    writeBinary 0 = []
+    writeBinary x = (writeBinary (x `div` 2)) ++ (show (x `mod` 2))
 
 
 -- S.... l.....o...... w......
